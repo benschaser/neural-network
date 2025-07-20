@@ -1,8 +1,8 @@
 #include "neural_network.h"
 
-NeuralNetwork::NeuralNetwork(std::string dataset_label, vec<int> topology, double learningRate)
+NeuralNetwork::NeuralNetwork(std::string cli_label, vec<int> topology, double learningRate)
 {
-    this->dataset_label = dataset_label;
+    this->cli_label = cli_label;
     this->topology = topology;
     this->learningRate = learningRate;
     for (ulong i = 0; i < topology.size(); ++i)
@@ -84,20 +84,16 @@ void NeuralNetwork::updateWeights() {
 
 void NeuralNetwork::train(vec<RowVector*> input, vec<RowVector*> output) {
     for (ulong i = 0; i < input.size(); ++i) {
-        std::cout << get_env_label() << "Training on input: " << *input[i] << '/' << input.size() << '\n';
+        std::cout << cli_label << " Training on input: " << *input[i] << '/' << input.size() << '\n';
         propogateForward(*input[i]);
-        std::cout << get_env_label() << "\33[33mExpected value: " << *output[i] << "\33[0m\n";
+        std::cout << cli_label << " \33[33mExpected value: " << *output[i] << "\33[0m\n";
         if (*output[i] == *neuronLayers.back()) {
-            std::cout << get_env_label() << "\33[32mOutput value: " << *neuronLayers.back() << "\33[0m\n";
+            std::cout << cli_label << " \33[32mOutput value: " << *neuronLayers.back() << "\33[0m\n";
         }
         else {
-            std::cout << get_env_label() << "\33[31mOutput value: " << *neuronLayers.back() << "\33[0m\n";
+            std::cout << cli_label << " \33[31mOutput value: " << *neuronLayers.back() << "\33[0m\n";
         }
         propogateBackward(*output[i]);
-        std::cout << get_env_label() << "MSE: " << std::sqrt((*deltas.back()).dot((*deltas.back())) / deltas.back()->size()) << '\n';
+        std::cout << cli_label << "MSE: " << std::sqrt((*deltas.back()).dot((*deltas.back())) / deltas.back()->size()) << '\n';
     }
- }
- 
- std::string NeuralNetwork::get_env_label() {
-    return "[" + dataset_label + "] ";
  }
