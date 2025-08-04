@@ -49,19 +49,26 @@ bool TrainingSetMNIST::load_data(std::string arg)
         // read label
         std::getline(ss, cell, ',');
         int label = std::stoi(cell);
-        // TO DO: add label to expected output;
+        // add label to expected output;
+        RowVector outRow(10);
+        if (label < 10 && label >= 0)
+            outRow[label] = 1.0;
 
         // read pixels (784 count)
-        RowVector row(784);
+        RowVector inRow(784);
         for (int i = 0; i < 784; ++i)
         {
             if (!std::getline(ss, cell, ','))
                 throw std::runtime_error("Malformed CSV line: " + line);
 
-            row(i) = std::stoi(cell) / 255.0; // normalized
+            inRow(i) = std::stoi(cell) / 255.0; // normalized
         }
-        input.push_back(new RowVector(row));
+        input.push_back(new RowVector(inRow));
+        output.push_back(new RowVector(outRow));
+        ++count;
+        std::cout << "\rLoaded " << count << '/' << line_count << std::flush;
     }
+    std::cout << "Done\n";
 
     return true;
 }

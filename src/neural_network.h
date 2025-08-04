@@ -1,11 +1,12 @@
 #pragma once
 #include "aliases.h"
 
-
-const double activationFunction(double x) {
+const double activationFunctionX(double x)
+{
     return tanhf(x);
-} 
-const double activationFunctionDerivative(double x) {
+}
+const double activationFunctionDerivativeX(double x)
+{
     return 1.0 - tanhf(x) * tanhf(x);
 }
 
@@ -18,7 +19,7 @@ public:
     void propogateBackward(RowVector &output);
     void calcErrors(RowVector &output);
     void updateWeights();
-    void train(vec<RowVector *> input, vec<RowVector*> output);
+    void train(vec<RowVector *> input, vec<RowVector *> output);
 
     std::string cli_label = "[default]";
     vec<int> topology;
@@ -27,6 +28,6 @@ public:
     vec<RowVector *> deltas;
     vec<Matrix *> weights;
     double learningRate;
-    std::function<double(double)> activationFunction = activationFunction;
-    std::function<double(double)> activationFunctionDerivative = activationFunctionDerivative;
+    std::function<double(double)> activationFunction = activationFunctionX;
+    std::function<double(double)> activationFunctionDerivative = activationFunctionDerivativeX;
 };
