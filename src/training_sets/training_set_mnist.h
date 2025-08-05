@@ -8,5 +8,5 @@ public:
     TrainingSetMNIST()
         : Dataset("mnist") {}
 
-    bool load_data(std::string arg) override;
+    bool load_data(std::string arg, int max_count) override;
 };

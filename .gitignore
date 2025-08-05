@@ -8,6 +8,7 @@ Makefile
 .exe
 .out
 .app
+.csv
 
 .vscode/
 .DS_Store

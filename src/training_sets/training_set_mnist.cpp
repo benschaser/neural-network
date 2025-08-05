@@ -24,7 +24,7 @@ int count_lines(const std::string filepath)
     return count;
 }
 
-bool TrainingSetMNIST::load_data(std::string arg)
+bool TrainingSetMNIST::load_data(std::string arg, int max_count)
 {
     std::cout << "Loading MNIST data from: " << arg << std::endl;
     int line_count = count_lines(arg);
@@ -37,11 +37,11 @@ bool TrainingSetMNIST::load_data(std::string arg)
 
     std::string line;
     int count = 0;
-
+    std::cout << "\033[?25l"; // hide cursor
     while (std::getline(file, line))
     {
-        if (count >= 100000)
-            break; // shouldn't go over 100,000 samples
+        if (count >= max_count)
+            break; // shouldn't go over max samples
 
         std::stringstream ss(line);
         std::string cell;
@@ -66,9 +66,9 @@ bool TrainingSetMNIST::load_data(std::string arg)
         input.push_back(new RowVector(inRow));
         output.push_back(new RowVector(outRow));
         ++count;
-        std::cout << "\rLoaded " << count << '/' << line_count << std::flush;
+        std::cout << "\r[mnist] Imported " << count << '/' << line_count << std::flush;
     }
-    std::cout << "Done\n";
+    std::cout << "\n[mnist] Dataset import completed.\n\033[?25h";
 
     return true;
 }

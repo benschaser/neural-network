@@ -1,14 +1,8 @@
 #pragma once
 #include "aliases.h"
 
-const double activationFunctionX(double x)
-{
-    return tanhf(x);
-}
-const double activationFunctionDerivativeX(double x)
-{
-    return 1.0 - tanhf(x) * tanhf(x);
-}
+const double activationFunction(double x);
+const double activationFunctionDerivative(double x);
 
 class NeuralNetwork
 {
@@ -28,6 +22,6 @@ public:
     vec<RowVector *> deltas;
     vec<Matrix *> weights;
     double learningRate;
-    std::function<double(double)> activationFunction = activationFunctionX;
-    std::function<double(double)> activationFunctionDerivative = activationFunctionDerivativeX;
+    std::function<double(double)> activationFunction = activationFunction;
+    std::function<double(double)> activationFunctionDerivative = activationFunctionDerivative;
 };

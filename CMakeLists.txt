@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -Wall")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++")
 
-include_directories(${CMAKE_SOURCE_DIR}/include/Eigen)
+include_directories(${CMAKE_SOURCE_DIR}/include/Eigen ${CMAKE_SOURCE_DIR}/src)
 
 file(GLOB SOURCES "src/*.cpp" "src/training_sets/*.cpp")
 
