@@ -1,8 +1,10 @@
 #pragma once
 #include "aliases.h"
 
-const double activationFunction(double x);
-const double activationFunctionDerivative(double x);
+const double activationFunctionX(double x);
+const double activationFunctionDerivativeX(double x);
+
+// define softmax function to apply to output for proper distribution
 
 class NeuralNetwork
 {
@@ -22,6 +24,6 @@ public:
     vec<RowVector *> deltas;
     vec<Matrix *> weights;
     double learningRate;
-    std::function<double(double)> activationFunction = activationFunction;
-    std::function<double(double)> activationFunctionDerivative = activationFunctionDerivative;
+    std::function<double(double)> activationFunction = activationFunctionX;
+    std::function<double(double)> activationFunctionDerivative = activationFunctionDerivativeX;
 };

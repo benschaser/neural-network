@@ -51,11 +51,13 @@ bool TrainingSetMNIST::load_data(std::string arg, int max_count)
         int label = std::stoi(cell);
         // add label to expected output;
         RowVector outRow(10);
+        outRow.setZero();
         if (label < 10 && label >= 0)
             outRow[label] = 1.0;
 
         // read pixels (784 count)
         RowVector inRow(784);
+        inRow.setZero();
         for (int i = 0; i < 784; ++i)
         {
             if (!std::getline(ss, cell, ','))

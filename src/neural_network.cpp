@@ -1,10 +1,10 @@
 #include "neural_network.h"
 
-const double activationFunction(double x)
+const double activationFunctionX(double x)
 {
     return tanhf(x);
 }
-const double activationFunctionDerivative(double x)
+const double activationFunctionDerivativeX(double x)
 {
     return 1.0 - tanhf(x) * tanhf(x);
 }
@@ -71,7 +71,7 @@ void NeuralNetwork::calcErrors(RowVector &output)
 {
     (*deltas.back()) = output - (*neuronLayers.back());
 
-    for (ulong i = 0; i < topology.size() - 1; ++i)
+    for (ulong i = topology.size() - 2; i > 0; --i)
     {
         (*deltas[i]) = (*deltas[i + 1]) * (weights[i]->transpose());
     }
