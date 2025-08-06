@@ -1,10 +1,9 @@
 #pragma once
 #include "aliases.h"
 
-const double activationFunctionX(double x);
-const double activationFunctionDerivativeX(double x);
-
-// define softmax function to apply to output for proper distribution
+double activationFunctionX(double x);
+double activationFunctionDerivativeX(double x);
+RowVector softmax(const RowVector &z);
 
 class NeuralNetwork
 {

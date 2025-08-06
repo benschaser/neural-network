@@ -63,7 +63,7 @@ bool TrainingSetMNIST::load_data(std::string arg, int max_count)
             if (!std::getline(ss, cell, ','))
                 throw std::runtime_error("Malformed CSV line: " + line);
 
-            inRow(i) = std::stoi(cell) / 255.0; // normalized
+            inRow(i) = static_cast<float>(std::stoi(cell)) / 255.0f; // normalized
         }
         input.push_back(new RowVector(inRow));
         output.push_back(new RowVector(outRow));

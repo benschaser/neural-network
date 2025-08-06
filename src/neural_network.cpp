@@ -1,12 +1,18 @@
 #include "neural_network.h"
 
-const double activationFunctionX(double x)
+double activationFunctionX(double x)
 {
     return tanhf(x);
 }
-const double activationFunctionDerivativeX(double x)
+double activationFunctionDerivativeX(double x)
 {
     return 1.0 - tanhf(x) * tanhf(x);
+}
+RowVector softmax(const RowVector &z)
+{
+    float maxCoeff = z.maxCoeff();
+    RowVector expShifted = (z.array() - maxCoeff).exp();
+    return expShifted / expShifted.sum();
 }
 
 NeuralNetwork::NeuralNetwork(std::string cli_label, vec<int> topology, double learningRate)
@@ -69,7 +75,7 @@ void NeuralNetwork::propogateBackward(RowVector &output)
 
 void NeuralNetwork::calcErrors(RowVector &output)
 {
-    (*deltas.back()) = output - (*neuronLayers.back());
+    (*deltas.back()) = output - (softmax(*neuronLayers.back()));
 
     for (ulong i = topology.size() - 2; i > 0; --i)
     {
@@ -110,14 +116,20 @@ void NeuralNetwork::train(vec<RowVector *> input, vec<RowVector *> output)
     {
         // std::cout << cli_label << " Training on input: " << *input[i] << '/' << input.size() << '\n';
         propogateForward(*input[i]);
-        std::cout << cli_label << " \33[33mExpected value: " << *output[i] << "\33[0m\n";
-        if (*output[i] == *neuronLayers.back())
+        std::cout << cli_label << " \33[33mExpected value: [" << *output[i] << "]\33[0m\n";
+
+        RowVector logits = *neuronLayers.back();
+        RowVector predictions = softmax(logits);
+
+        if (*output[i] == predictions)
         {
-            std::cout << cli_label << " \33[32mOutput value: " << *neuronLayers.back() << "\33[0m\n";
+            std::cout << cli_label << " \33[32mOutput value: [" << logits << "]\33[0m\n";
+            std::cout << cli_label << " \33[32mAdjusted Out: [" << predictions << "]\33[0m\n";
         }
         else
         {
-            std::cout << cli_label << " \33[31mOutput value: " << *neuronLayers.back() << "\33[0m\n";
+            std::cout << cli_label << " \33[31mOutput value: [" << logits << "]\33[0m\n";
+            std::cout << cli_label << " \33[31mAdjusted Out: [" << predictions << "]\33[0m\n";
         }
         propogateBackward(*output[i]);
         std::cout << cli_label << " MSE: " << std::sqrt((*deltas.back()).dot((*deltas.back())) / deltas.back()->size()) << '\n';

@@ -12,6 +12,6 @@ int main()
         return -1;
     }
 
-    NeuralNetwork nnet('[' + mnist.label + ']', {784, 256, 128, 64, 10}, 0.01);
+    NeuralNetwork nnet('[' + mnist.label + ']', {784, 256, 128, 64, 10}, 0.001);
     nnet.train(mnist.input, mnist.output);
 }
